@@ -1,5 +1,5 @@
-<template>
-<div class="topbar">{{ title }}</div>
+<template lang="pug">
+div.topbar {{ title }}
 </template>
 
 <script>
