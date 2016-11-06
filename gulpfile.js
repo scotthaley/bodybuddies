@@ -1,6 +1,7 @@
 // Include Gulp
 var gulp = require('gulp');
 var nodemon = require('nodemon');
+var notifier = require('node-notifier');
 
 // Include plugins
 var plugins = require("gulp-load-plugins") ({
@@ -12,10 +13,11 @@ var plugins = require("gulp-load-plugins") ({
 // Define default destination folder
 var dest = 'www/public/';
 
-gulp.task('default', ['webpack', 'css', 'watch']);
+gulp.task('server', ['koa server','webpack', 'fonts', 'sass', 'watch']);
+gulp.task('default', ['webpack', 'fonts', 'sass', 'watch']);
 
 gulp.task('setup', function(done) {
-	plugins.runSequence('bower', ['webpack', 'css'], done);
+	plugins.runSequence('bower', ['webpack', 'fonts', 'sass'], done);
 });
 
 gulp.task('bower', function() {
@@ -27,7 +29,13 @@ gulp.task('webpack', function() {
 		.pipe(plugins.webpackStream( require('./webpack.config.js')))
 		.on('error', swallowError)
 		.pipe(gulp.dest(dest + 'js'))
-		.pipe(plugins.livereload());
+		.pipe(plugins.livereload())
+		.on('end', function() {
+			notifier.notify({
+				'title': 'Gulp',
+				'message': 'Webpack Finished'
+			})
+		});
 });
 
 gulp.task('css', function() {
@@ -53,6 +61,31 @@ gulp.task('css', function() {
 		.pipe(plugins.livereload());
 });
 
+gulp.task('sass', function() {
+	var sassEntry = './src/sass/main.scss';
+
+	return gulp.src(sassEntry)
+		.pipe(plugins.sass())
+		.on('error', swallowError)
+		.pipe(plugins.cleanCss())
+		.pipe(gulp.dest(dest + 'css'))
+		.pipe(plugins.livereload())
+		.on('end', function() {
+			notifier.notify({
+				'title': 'Gulp',
+				'message': 'Sass Finished'
+			})
+		});
+});
+
+gulp.task('fonts', function() {
+	var fontDirectories = [
+		'./bower_components/materialize/fonts/**/*.*'
+	]
+	return gulp.src(fontDirectories)
+		.pipe(gulp.dest(dest + 'fonts'));
+});
+
 var server;
 
 gulp.task('koa server', function (cb) {
@@ -67,18 +100,15 @@ gulp.task('koa server', function (cb) {
 		env: {'NODE_ENV': 'development'}
 	})
 	.on('quit', function() {
-		console.log('Press any key to exit');
-
-		process.stdin.setRawMode(true);
-		process.stdin.resume();
-		process.stdin.on('data', process.exit.bind(process, 0));
+		process.exit()
 	});
 });
 
 gulp.task('watch', function() {
 	plugins.livereload.listen();
 	gulp.watch(['src/js/**/*.js', 'src/vue/**/*.vue'], ['webpack']);
-	gulp.watch('src/less/**/*.less', ['css']);
+	// gulp.watch('src/less/**/*.less', ['css']);
+	gulp.watch('src/sass/**/*.scss', ['sass']);
 	gulp.watch('./**/*.html').on('change', function(file) {
 		plugins.livereload.changed(file.path);
 	})
