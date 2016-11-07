@@ -24,7 +24,7 @@ div.card.blue-grey
         },
         computed: {
             formattedCount() {
-                return this.$data.computedCount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return this.$data.computedCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
         },
         mounted() {
