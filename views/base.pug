@@ -2,15 +2,16 @@ doctype html
 html
 	head
 		meta(charset='UTF-8')
+		meta(name='viewport' content='width=device-width,initial-scale=1')
 		title #{ title }
 		link(
 			rel='stylesheet'
 			type='text/css'
 			href='public/css/main.css'
 			)
-		script(
-			src='public/js/app.bundle.js'
-			async
-			)
+		link(href='http://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
+		script(src='jquery.js')
+		script(src='public/js/app.bundle.js' async)
+		script(src='materialize.js')
 	body
 		block content

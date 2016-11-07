@@ -7,6 +7,8 @@ var koa    = require('koa'),
     router = require('koa-router')();
 
 app.use(serve(__dirname + '/www'));
+app.use(serve(__dirname + '/bower_components/jquery/dist'));
+app.use(serve(__dirname + '/bower_components/materialize/bin'));
 
 new pug({
     viewPath: __dirname + '/views',

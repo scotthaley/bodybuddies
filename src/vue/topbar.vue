@@ -1,28 +1,27 @@
 <template lang="pug">
-div.topbar {{ title }}
+nav
+    div.nav-wrapper.topbar
+        a.brand-logo {{ title }}
+        a.button-collapse(href='#',data-activates='leftnav')
+            i.material-icons menu
+        ul.side-nav#leftnav(href='#')
+            li
+                router-link(to='matchup') Matchup
+            li
+                router-link(to='mybody') My Body
 </template>
 
 <script>
+
 export default {
 	name: "topbar",
 	data() {
     	return {
-        	title: "Vue TopBar"
+        	title: "Body Buddies"
         }
+    },
+    mounted() {
+        $('.button-collapse').sideNav({ closeOnClick: true });
     }
 }
 </script>
-
-<style lang="less" scoped>
-@import "../less/variables/colors";
-
-.topbar {
-	background-color: @topbar;
-	position: relative;
-	top: 0;
-	left: 0;
-	width: 100%;
-	padding: 15px;
-	color: @topbar-font;
-}
-</style>
