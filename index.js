@@ -3,6 +3,7 @@ var koa    = require('koa'),
     serve  = require('koa-static'),
     argv  = require('yargs').argv,
     path   = require('path'),
+    backend = require('./backend.js'),
     app    = koa(),
     http   = require('http').createServer(app.callback()),
     router = require('koa-router')();
@@ -24,6 +25,8 @@ router
   .get('/', function *(next) {
     this.render('index');
   })
+
+router.use('/api', backend.router.routes());
 
 app.use(router.routes());
 

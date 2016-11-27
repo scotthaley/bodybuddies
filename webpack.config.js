@@ -8,8 +8,13 @@ module.exports = {
     resolve: {
         root: [
             path.resolve('./bower_components'),
-            path.resolve('./src')
-        ]
+            path.resolve('./src'),
+            path.resolve('./src/vue'),
+            path.resolve('./src/js')
+        ],
+        alias: {
+            'jquery': path.resolve('./bower_components/jquery/dist/jquery.min.js')
+        }
     },
     module: {
         loaders: [

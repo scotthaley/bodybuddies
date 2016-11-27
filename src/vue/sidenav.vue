@@ -5,6 +5,8 @@ ul.side-nav(href='#')
 </template>
 
 <script>
+var API = require('api');
+
 export default {
     name: 'sidenav',
     data() {
@@ -15,7 +17,7 @@ export default {
     computed: {
         menuItems() {
             var items = [];
-            if (_sessionToken) {
+            if (API._sessionToken) {
                 items.push({ to: 'matchup', label: 'Matchup' }),
                 items.push({ to: 'mybody', label: 'My Body' })
             } else {

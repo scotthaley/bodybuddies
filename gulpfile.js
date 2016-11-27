@@ -2,6 +2,9 @@
 var gulp = require('gulp');
 var nodemon = require('nodemon');
 var notifier = require('node-notifier');
+var argv = require('yargs').argv;
+
+var port = argv.port ? argv.port : 8080;
 
 // Include plugins
 var plugins = require("gulp-load-plugins") ({
@@ -97,6 +100,7 @@ gulp.task('koa server', function (cb) {
 	server = nodemon({
 		script: 'index.js',
 		ext: 'js pug',
+		args: [`--port=${port}`],
 		env: {'NODE_ENV': 'development'}
 	})
 	.on('quit', function() {
